@@ -1,0 +1,29 @@
+[project]
+name = "easy-gravity"
+version = "0.1.0"
+description = "Stupid lib to extract gravity from pycolmap reconstructions (or just numpy arrays)"
+authors = [
+    { name = "Johan Edstedt", email = "johan.edstedt@liu.se" }
+]
+dependencies = [
+    "numpy<2",
+    "pycolmap>=0.6.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "rerun-sdk>=0.17.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/easy_gravity"]
