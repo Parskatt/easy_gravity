@@ -1,13 +1,13 @@
 [project]
 name = "easy-gravity"
-version = "0.1.0"
+version = "0.2"
 description = "Stupid lib to extract gravity from pycolmap reconstructions (or just numpy arrays)"
 authors = [
     { name = "Johan Edstedt", email = "johan.edstedt@liu.se" }
 ]
 dependencies = [
     "numpy<2",
-    "pycolmap>=0.6.1",
+    "pycolmap==0.6.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
