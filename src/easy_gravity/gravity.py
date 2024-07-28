@@ -53,7 +53,8 @@ def get_gravity_from_colmap_reconstruction(
         reconstruction: pycolmap.Reconstruction, 
         method: Optional[Method|str] = Method.ROTATION_PLANES):
     if method == "im_feeling_lucky":
-        method = np.random.choice(list(Method))
+        method = np.random.choice(Method)
+        print(f"Congrats, you chose {method.name=} for estimating gravity.")
     else:
         method = Method(method)
     rotations = np.stack([x.cam_from_world.rotation.matrix() for x in reconstruction.images.values()])
