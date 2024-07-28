@@ -1,7 +1,13 @@
+from typing import Optional
 import numpy as np
 import pycolmap
 import os
-from pathlib import Path
+from enum import Enum
+
+class Method(Enum):
+    ROTATION_PLANES = "rotation_planes"
+    AVG_CAM_DOWN = "avg_cam_down"
+    CAM_POSITIONS = "cam_positions"
 
 def get_gravity_from_rotation_planes(rotations: np.ndarray):
     """
@@ -43,17 +49,24 @@ def get_gravity_from_camera_positions(positions: np.ndarray, rotations: np.ndarr
     return gravity
 
 
-def get_gravity_from_colmap_reconstruction(reconstruction: pycolmap.Reconstruction, mode = "cam_positions"):
-    
+def get_gravity_from_colmap_reconstruction(
+        reconstruction: pycolmap.Reconstruction, 
+        method: Optional[Method|str] = Method.ROTATION_PLANES):
+    if method == "im_feeling_lucky":
+        method = np.random.choice(list(Method))
+    else:
+        method = Method(method)
     rotations = np.stack([x.cam_from_world.rotation.matrix() for x in reconstruction.images.values()])
-    if mode == "rotation_planes":
+    if method == Method.ROTATION_PLANES:
         return get_gravity_from_rotation_planes(rotations)
-    elif mode == "avg_cam_down":
+    elif method == Method.AVG_CAM_DOWN:
         return get_gravity_from_avg_cam_down(rotations)
-    elif mode == "cam_positions":
+    elif method == Method.CAM_POSITIONS:
         positions = np.stack([x.cam_from_world.inverse().translation for x in reconstruction.images.values()])
         # need the rotations here for a way to get the sign
         return get_gravity_from_camera_positions(positions, rotations)
 
-def get_gravity_from_colmap_reconstruction_path(reconstruction_path: os.PathLike, mode = "cam_positions"):
-    return get_gravity_from_colmap_reconstruction(pycolmap.Reconstruction(reconstruction_path), mode = mode)
+def get_gravity_from_colmap_reconstruction_path(
+        reconstruction_path: os.PathLike, 
+        method: Optional[Method|str] = Method.ROTATION_PLANES):
+    return get_gravity_from_colmap_reconstruction(pycolmap.Reconstruction(reconstruction_path), method = method)

@@ -1,6 +1,6 @@
 [project]
 name = "easy-gravity"
-version = "0.2"
+version = "0.2.1"
 description = "Stupid lib to extract gravity from pycolmap reconstructions (or just numpy arrays)"
 authors = [
     { name = "Johan Edstedt", email = "johan.edstedt@liu.se" }
